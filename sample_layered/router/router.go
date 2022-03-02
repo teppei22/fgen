@@ -27,7 +27,10 @@ func Init() *echo.Echo {
 			persistence.NewTaskPersistence(conn)
 		)
 	)
-	e.GET("task/:id",taskHandler.FindTask)
+	e.GET("task/:id",taskHandler.FindByID)
+	e.POST("task",taskHandler.Create)
+	e.PUT("task/:id",taskHandler.Update)
+	e.GET("task/:id",taskHandler.Delete)
 
 	return e
 }

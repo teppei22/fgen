@@ -1,18 +1,12 @@
 package model
 
-import "time"
-
 type Task struct {
-	Id          int64
+	ID          int64
 	Title       string
 	Description string
-	createdAt   time.Time
-	updatedAt   time.Time
 }
 
-type createTaskRequest struct {
+type TaskRequest struct {
 	Title       string
 	Description string
-	createdAt   time.Time
-	updatedAt   time.Time
 }

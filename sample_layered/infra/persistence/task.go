@@ -2,7 +2,8 @@ package persistence
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/teppei22/fji-codegen/sample_layered/repository"
+	"github.com/teppei22/fji-codegen/sample_layered/domain/model"
+	"github.com/teppei22/fji-codegen/sample_layered/domain/repository"
 )
 
 type taskPersistence struct {
@@ -13,18 +14,41 @@ func NewTaskPersistence(conn *gorm.DB) repository.TaskRepository {
 	return &taskPersistence{Conn: conn}
 }
 
-func (t *TaskPersistence) FindTask(id string) (*model.Task, error) {
-	var task model.User
+func (p *taskPersistence) FindByID(id string) (*model.Task, error) {
 
-	// DB接続確認
-	// if err := t.Conn.Take(&user).Error; err != nil {
-	// 	return nil, err
-	// }
+	var task *model.Task
 
-	db := t.Conn.Find(&task)
-	if id != "" {
-		db = db.Where("id = ?", id).Find(&task)
+	if err := p.Conn.Where("id = ?", id).Find(&task).Error; err != nil {
+		return nil, err
 	}
 
 	return task, nil
+}
+
+func (p *taskPersistence) Create(task *model.Task) (*model.Task, error) {
+
+	if err := p.Conn.Create(&task).Error; err != nil {
+		return nil, err
+	}
+
+	return task, nil
+}
+
+func (p *taskPersistence) Update(task *model.Task) (*model.Task, error) {
+
+	if err := p.Conn.Model(&task).Update(&task).Error; err != nil {
+		return nil, err
+	}
+
+	return task, nil
+}
+
+// Delete taskの削除
+func (p *taskPersistence) Delete(task *model.Task) error {
+
+	if err := p.Conn.Delete(&task).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
