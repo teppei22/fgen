@@ -18,5 +18,12 @@ func Init() *echo.Echo {
 	// api routes
 	// api := e.Group("/api")
 
+	taskHandler := handler.NewTaskHandler(
+		usecase.NewTaskUseCase(
+			persistence.NewTaskPersistence(config.Connect()),
+		)
+	)
+	e.GET("task/:id",taskHandler.get())
+
 	return e
 }
