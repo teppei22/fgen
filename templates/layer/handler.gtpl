@@ -21,13 +21,13 @@ type {{ .UseCase.StructName }} struct {
 	{{ .UseCase.StructName }} usecase.{{ .UseCase.InterfaceName }}
 }
 
-func NewTask(u usecase.{{ .UseCase.InterfaceName }}) {{ .Handler.InterfaceName }} {
+func NewTask({{ .UseCase.ReceiverChar }} usecase.{{ .UseCase.InterfaceName }}) {{ .Handler.InterfaceName }} {
 	return &{{ .Handler.StructName }}{
 		{{ .UseCase.StructName }}: u,
 	}
 }
 
-func (h *{{ .Handler.StructName }}) FindByID(c echo.Context) error {
+func ({{ .Handler.ReceiverChar }} *{{ .Handler.StructName }}) FindByID(c echo.Context) error {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -42,7 +42,7 @@ func (h *{{ .Handler.StructName }}) FindByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, {{ .Model.Name }})
 }
 
-func (h *{{ .Handler.StructName }}) Create(c echo.Context) error {
+func ({{ .Handler.ReceiverChar }} *{{ .Handler.StructName }}) Create(c echo.Context) error {
 
 	var t model.{{ .Model.Name }}
 	err := c.Bind(&t)
@@ -59,7 +59,7 @@ func (h *{{ .Handler.StructName }}) Create(c echo.Context) error {
 	return c.JSON(http.StatusCreated, {{ .Model.Name }})
 }
 
-func (h *{{ .Handler.StructName }}) Update(c echo.Context) error {
+func ({{ .Handler.ReceiverChar }} *{{ .Handler.StructName }}) Update(c echo.Context) error {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -81,7 +81,7 @@ func (h *{{ .Handler.StructName }}) Update(c echo.Context) error {
 	return c.JSON(http.StatusOK, {{ .Model.Name }})
 }
 
-func (h *{{ .Handler.StructName }}) Delete(c echo.Context) error {
+func ({{ .Handler.ReceiverChar }} *{{ .Handler.StructName }}) Delete(c echo.Context) error {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
