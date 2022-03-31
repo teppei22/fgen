@@ -7,15 +7,21 @@ type Config struct {
 type CodeInfo struct {
 }
 
-type InitInfo struct {
+type TempInfo struct {
 	Name         string
 	TemplatePath string
 	OutputDir    string
 }
 
-type LayerInfo struct {
+type OutputImplData struct {
+	Handler     ImplFileData
+	Usecase     ImplFileData
+	Persistence ImplFileData
+	Repository  ImplFileData
+}
+
+type ImplFileData struct {
 	PkgName      string
-	DirPath      string
 	Name         string
 	TypeName     string
 	ReceiverChar string
