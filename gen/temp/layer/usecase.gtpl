@@ -1,4 +1,4 @@
-package {{ .UseCase.pkgName }}
+package {{ .UseCase.PkgName }}
 
 import (
 	"sample_layered/domain/model"

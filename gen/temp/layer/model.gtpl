@@ -1,4 +1,4 @@
-package {{ .Model.pkgName }}
+package {{ .Model.PkgName }}
 
 import "time"
 

@@ -1,7 +1,8 @@
 package gen
 
 type Config struct {
-	outputPath string
+	OutputPath string
+	Model      string
 }
 
 type CodeInfo struct {
@@ -15,16 +16,17 @@ type TempInfo struct {
 
 type OutputImplData struct {
 	Handler     ImplFileData
-	Usecase     ImplFileData
+	UseCase     ImplFileData
 	Persistence ImplFileData
 	Repository  ImplFileData
+	Model       ModelInfo
 }
 
 type ImplFileData struct {
-	PkgName      string
-	Name         string
-	TypeName     string
-	ReceiverChar string
+	PkgName       string
+	StructName    string
+	InterfaceName string
+	ReceiverChar  string
 }
 
 type ModelInfo struct {

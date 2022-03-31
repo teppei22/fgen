@@ -7,95 +7,103 @@ import (
 	"text/template"
 )
 
-func Init(config *Config) {
+func Init(config *Config) error {
 
-	outputPath := config.outputPath
+	outputPath := config.OutputPath
 
 	initInfo := []TempInfo{{
 		Name:         "main",
-		TemplatePath: "github.com/teppei22/fgen/gen/temp/init/main.gtpl",
+		TemplatePath: "./gen/temp/init/main.gtpl",
 		OutputDir:    outputPath,
 	}, {
 		Name:         "database",
-		TemplatePath: "github.com/teppei22/fgen/gen/temp/init/database.gtpl",
+		TemplatePath: "./gen/temp/init/database.gtpl",
 		OutputDir:    filepath.Join(outputPath, "infra"),
 	}, {
 		Name:         "router",
-		TemplatePath: "github.com/teppei22/fgen/gen/temp/init/router.gtpl",
+		TemplatePath: "./gen/temp/init/router.gtpl",
 		OutputDir:    filepath.Join(outputPath, "router"),
 	}}
 
-	if err := MakeDirInit(); err != nil {
-		panic(err)
+	if err := MakeDirInit(config); err != nil {
+		return fmt.Errorf("make dir init error: %w", err)
 	}
 
 	for _, iI := range initInfo {
 		if err := OutputFile(iI.TemplatePath, iI.OutputDir, iI.Name, nil); err != nil {
-			panic(err)
+			return fmt.Errorf("init output file error: %w", err)
 		}
 	}
+	return nil
 
 }
 
-func FileGenerate(config *Config) {
-	outputPath := config.outputPath
+func FileGenerate(config *Config) error {
+	outputPath := config.OutputPath
+
+	// NOTE: dir exists judge
 
 	tempInfo := []TempInfo{
 		{
 			Name:         "handler",
-			TemplatePath: "github.com/teppei22/fgen/gen/temp/layer/handler.gtpl",
-			OutputDir:    outputPath,
+			TemplatePath: "./gen/temp/layer/handler.gtpl",
+			OutputDir:    filepath.Join(outputPath, "handler"),
 		},
 		{
 			Name:         "usecase",
-			TemplatePath: "github.com/teppei22/fgen/gen/temp/layer/usecase.gtpl",
-			OutputDir:    outputPath,
+			TemplatePath: "./gen/temp/layer/usecase.gtpl",
+			OutputDir:    filepath.Join(outputPath, "usecase"),
 		},
 		{
 			Name:         "persistence",
-			TemplatePath: "github.com/teppei22/fgen/gen/temp/layer/persistence.gtpl",
+			TemplatePath: "./gen/temp/layer/persistence.gtpl",
 			OutputDir:    filepath.Join(outputPath, "infra", "persistence"),
 		},
 		{
 			Name:         "repository",
-			TemplatePath: "github.com/teppei22/fgen/gen/temp/layer/repository.gtpl",
+			TemplatePath: "./gen/temp/layer/repository.gtpl",
 			OutputDir:    filepath.Join(outputPath, "domain", "repository"),
 		},
 	}
 
 	data := &OutputImplData{
 		Handler: ImplFileData{
-			PkgName: "handler",
-
-			Name:         "handler",
-			TypeName:     "Handler",
-			ReceiverChar: "h",
+			PkgName:       "handler",
+			StructName:    "handler",
+			InterfaceName: "Handler",
+			ReceiverChar:  "h",
 		},
-		Usecase: ImplFileData{
-			PkgName:      "usecase",
-			Name:         "usecase",
-			TypeName:     "Usecase",
-			ReceiverChar: "u",
+		UseCase: ImplFileData{
+			PkgName:       "usecase",
+			StructName:    "usecase",
+			InterfaceName: "Usecase",
+			ReceiverChar:  "u",
 		},
 		Persistence: ImplFileData{
-			PkgName:      "persistence",
-			Name:         "persistence",
-			TypeName:     "Persistence",
-			ReceiverChar: "p",
+			PkgName:       "persistence",
+			StructName:    "persistence",
+			InterfaceName: "Persistence",
+			ReceiverChar:  "p",
 		},
 		Repository: ImplFileData{
-			PkgName:      "repository",
-			Name:         "repository",
-			TypeName:     "Repository",
-			ReceiverChar: "r",
+			PkgName:       "repository",
+			StructName:    "repository",
+			InterfaceName: "Repository",
+			ReceiverChar:  "r",
+		},
+		Model: ModelInfo{
+			Name:   config.Model,
+			Fields: []FieldInfo{},
 		},
 	}
 
 	for _, tI := range tempInfo {
 		if err := OutputFile(tI.TemplatePath, tI.OutputDir, tI.Name, data); err != nil {
-			panic(err)
+			return fmt.Errorf("output file error: %w", err)
+			// panic(err)
 		}
 	}
+	return nil
 
 }
 
@@ -111,6 +119,7 @@ func OutputFile(tmpPath string, dir string, name string, data interface{}) error
 	if err := t.Execute(of, data); err != nil {
 		return fmt.Errorf("error executing file: %w", err)
 	}
+	return nil
 }
 
 func ListFiles(root string) ([]string, error) {
@@ -144,15 +153,17 @@ func ListFiles(root string) ([]string, error) {
 
 }
 
-func MakeDirInit() error {
+func MakeDirInit(config *Config) error {
+
+	outputPath := config.OutputPath
 
 	dirPath := []string{
-		"router",
-		"handler",
-		"usecase",
-		"domain/model",
-		"domain/repository",
-		"infra/persistence",
+		filepath.Join(outputPath, "router"),
+		filepath.Join(outputPath, "handler"),
+		filepath.Join(outputPath, "usecase"),
+		filepath.Join(outputPath, "domain/model"),
+		filepath.Join(outputPath, "domain/repository"),
+		filepath.Join(outputPath, "infra/persistence"),
 	}
 
 	for _, path := range dirPath {
