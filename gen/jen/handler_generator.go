@@ -1,4 +1,4 @@
-package fgen
+package gen
 
 import (
 	"fmt"
@@ -9,33 +9,35 @@ import (
 	jen "github.com/dave/jennifer/jen"
 )
 
-type ServerGenerator interface {
+type HandlerGenerator interface {
 	Execute()
 }
 
-type Server struct {
-	// Generator ServerGenerator
+type Handler struct {
+	Generator HandlerGenerator
 }
 
-func NewServer() ServerGenerator {
-	return &Server{}
+func NewHandler(g HandlerGenerator) HandlerGenerator {
+	return &Handler{
+		Generator: g,
+	}
 }
 
-const (
-	MOD_DIR = "github.com/teppei22/fgen/sample_layered"
-)
+// const (
+// 	MOD_DIR = "github.com/teppei22/fgen/sample_layered"
+// )
 
-func (s *Server) Execute() {
+func (h *Handler) Execute() {
 
 	// make router
-	if _, err := os.Stat("./output/router"); err != nil {
-		fmt.Println("router dir doesn't exist")
-		if err := os.Mkdir("./output/router", 0777); err != nil {
+	if _, err := os.Stat("./handler"); err != nil {
+		fmt.Println("handler dir doesn't exist")
+		if err := os.Mkdir("handler", 0777); err != nil {
 			fmt.Println(err)
 		}
 	}
 
-	r := jen.NewFile("router")
+	r := jen.NewFile("handler")
 
 	r.ImportName("github.com/labstack/echo/v4", "echo")
 	// module path を取得
@@ -68,7 +70,7 @@ func (s *Server) Execute() {
 		g.Line().Return(jen.Id("e"))
 	})
 
-	if err := r.Save(`./output/router/sample_server.go`); err != nil {
+	if err := r.Save(`./router/sample_server.go`); err != nil {
 		log.Fatal(err)
 	}
 

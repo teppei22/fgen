@@ -1,4 +1,4 @@
-package {{ .Handler.pkgName }}
+package {{ .Handler.PkgName }}
 
 import (
 	"net/http"
@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type {{ .HandlerInterface.Name }} interface {
+type {{ .Handler.InterfaceName }} interface {
 	FindByID(c echo.Context) error
 	Create(c echo.Context) error
 	Update(c echo.Context) error
@@ -34,29 +34,29 @@ func (h *{{ .Handler.StructName }}) FindByID(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	{{ .ModelName }}, err := h.{{ .UseCase.StructName }}.FindByID(id)
+	{{ .Model.Name }}, err := h.{{ .UseCase.StructName }}.FindByID(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, {{ .ModelName }})
+	return c.JSON(http.StatusOK, {{ .Model.Name }})
 }
 
 func (h *{{ .Handler.StructName }}) Create(c echo.Context) error {
 
-	var t model.{{ .ModelName }}
+	var t model.{{ .Model.Name }}
 	err := c.Bind(&t)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	{{ .ModelName }}, err := h.{{ .UseCase.StructName }}.Create(&t)
+	{{ .Model.Name }}, err := h.{{ .UseCase.StructName }}.Create(&t)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 
 	}
 
-	return c.JSON(http.StatusCreated, {{ .ModelName }})
+	return c.JSON(http.StatusCreated, {{ .Model.Name }})
 }
 
 func (h *{{ .Handler.StructName }}) Update(c echo.Context) error {
@@ -72,13 +72,13 @@ func (h *{{ .Handler.StructName }}) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	{{ .ModelName }}, err := h.{{ .UseCase.StructName }}.Update(&t)
+	{{ .Model.Name }}, err := h.{{ .UseCase.StructName }}.Update(&t)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 
 	}
 
-	return c.JSON(http.StatusOK, {{ .ModelName }})
+	return c.JSON(http.StatusOK, {{ .Model.Name }})
 }
 
 func (h *{{ .Handler.StructName }}) Delete(c echo.Context) error {

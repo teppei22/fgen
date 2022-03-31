@@ -1,4 +1,4 @@
-package fgen
+package gen
 
 import (
 	"log"
