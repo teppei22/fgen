@@ -13,15 +13,15 @@ func Init(config *Config) error {
 
 	initInfo := []TempInfo{{
 		Name:         "main",
-		TemplatePath: "./gen/temp/init/main.gtpl",
+		TemplatePath: "./templates/init/main.gtpl",
 		OutputDir:    outputPath,
 	}, {
 		Name:         "database",
-		TemplatePath: "./gen/temp/init/database.gtpl",
+		TemplatePath: "./templates/init/database.gtpl",
 		OutputDir:    filepath.Join(outputPath, "infra"),
 	}, {
 		Name:         "router",
-		TemplatePath: "./gen/temp/init/router.gtpl",
+		TemplatePath: "./templates/init/router.gtpl",
 		OutputDir:    filepath.Join(outputPath, "router"),
 	}}
 
@@ -46,22 +46,22 @@ func FileGenerate(config *Config) error {
 	tempInfo := []TempInfo{
 		{
 			Name:         "handler",
-			TemplatePath: "./gen/temp/layer/handler.gtpl",
+			TemplatePath: "./templates/layer/handler.gtpl",
 			OutputDir:    filepath.Join(outputPath, "handler"),
 		},
 		{
 			Name:         "usecase",
-			TemplatePath: "./gen/temp/layer/usecase.gtpl",
+			TemplatePath: "./templates/layer/usecase.gtpl",
 			OutputDir:    filepath.Join(outputPath, "usecase"),
 		},
 		{
 			Name:         "persistence",
-			TemplatePath: "./gen/temp/layer/persistence.gtpl",
+			TemplatePath: "./templates/layer/persistence.gtpl",
 			OutputDir:    filepath.Join(outputPath, "infra", "persistence"),
 		},
 		{
 			Name:         "repository",
-			TemplatePath: "./gen/temp/layer/repository.gtpl",
+			TemplatePath: "./templates/layer/repository.gtpl",
 			OutputDir:    filepath.Join(outputPath, "domain", "repository"),
 		},
 	}
