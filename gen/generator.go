@@ -2,14 +2,31 @@ package gen
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"text/template"
 )
 
-func Init(config *Config) error {
+type Generator interface {
+	Init() error
+	FileGenerateAll() error
+	OutputFile(tmpPath string, dir string, name string, data interface{}) error
+	MakeDirInit() error
+}
 
-	outputPath := config.OutputPath
+type AutoGen struct {
+	Config Config
+}
+
+func NewAutoGen(conf Config) Generator {
+	return &AutoGen{Config: conf}
+
+}
+
+func (g *AutoGen) Init() error {
+
+	outputPath := g.Config.OutputPath
 
 	initInfo := []TempInfo{{
 		Name:         "main",
@@ -25,21 +42,22 @@ func Init(config *Config) error {
 		OutputDir:    filepath.Join(outputPath, "router"),
 	}}
 
-	if err := MakeDirInit(config); err != nil {
+	if err := g.MakeDirInit(); err != nil {
 		return fmt.Errorf("make dir init error: %w", err)
 	}
 
 	for _, iI := range initInfo {
-		if err := OutputFile(iI.TemplatePath, iI.OutputDir, iI.Name, nil); err != nil {
+		if err := g.OutputFile(iI.TemplatePath, iI.OutputDir, iI.Name, nil); err != nil {
 			return fmt.Errorf("init output file error: %w", err)
 		}
+		LogCreated(iI.Name, iI.OutputDir)
 	}
 	return nil
 
 }
 
-func FileGenerate(config *Config) error {
-	outputPath := config.OutputPath
+func (g *AutoGen) FileGenerateAll() error {
+	outputPath := g.Config.OutputPath
 
 	// NOTE: dir exists judge
 
@@ -92,25 +110,28 @@ func FileGenerate(config *Config) error {
 			ReceiverChar:  "r",
 		},
 		Model: ModelInfo{
-			Name:   config.Model,
+			Name:   g.Config.Model,
 			Fields: []FieldInfo{},
 		},
 	}
 
 	for _, tI := range tempInfo {
-		if err := OutputFile(tI.TemplatePath, tI.OutputDir, tI.Name, data); err != nil {
+		if err := g.OutputFile(tI.TemplatePath, tI.OutputDir, tI.Name, data); err != nil {
 			return fmt.Errorf("output file error: %w", err)
 			// panic(err)
 		}
+		LogCreated(tI.Name, tI.OutputDir)
 	}
 	return nil
 
 }
 
-func OutputFile(tmpPath string, dir string, name string, data interface{}) error {
+func (g *AutoGen) OutputFile(tmpPath string, dir string, name string, data interface{}) error {
+
+	model := g.Config.Model
 	t := template.Must(template.ParseFiles(tmpPath))
 
-	of, err := os.Create(filepath.Join(dir, name+".go"))
+	of, err := os.Create(filepath.Join(dir, model+".go"))
 	if err != nil {
 		return fmt.Errorf("error creating file: %w", err)
 	}
@@ -153,9 +174,9 @@ func ListFiles(root string) ([]string, error) {
 
 }
 
-func MakeDirInit(config *Config) error {
+func (g *AutoGen) MakeDirInit() error {
 
-	outputPath := config.OutputPath
+	outputPath := g.Config.OutputPath
 
 	dirPath := []string{
 		filepath.Join(outputPath, "router"),
@@ -186,6 +207,6 @@ func MakeDir(dirPath string) error {
 	return nil
 }
 
-func NewInitInfo() {
-
+func LogCreated(fileName string, outputDir string) {
+	log.Println("Created: ", fileName+".go", " - ", outputDir)
 }

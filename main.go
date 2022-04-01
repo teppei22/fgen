@@ -1,12 +1,11 @@
+/*
+Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+
+*/
 package main
 
-import (
-	"fmt"
-
-	. "github.com/dave/jennifer/jen"
-)
+import "github.com/teppei22/fji-codegen/cmd"
 
 func main() {
-	f := "a"
-	fmt.Printf("%#v", f)
+	cmd.Execute()
 }

@@ -16,13 +16,13 @@ type {{ .UseCase.StructName }} struct {
 	{{ .Repository.StructName }} repository.{{ .Repository.InterfaceName }}
 }
 
-func New{{ .Model.Name }}(r repository.{{ .Repository.InterfaceName }}) {{ .UseCase.InterfaceName }} {ß
+func New{{ .Model.Name }}{{ .Repository.ReceiverChar }} repository.{{ .Repository.InterfaceName }}) {{ .UseCase.InterfaceName }} {ß
 	return &{{ .UseCase.StructName }}{
 		{{ .Repository.StructName }}: r,
 	}
 }
 
-func (u *{{ .UseCase.StructName }}) FindByID(id int) (*model.{{ .Model.Name }}, error) {
+func ({{ .UseCase.ReceiverChar }} *{{ .UseCase.StructName }}) FindByID(id int) (*model.{{ .Model.Name }}, error) {
 	{{ .Model.Name }}, err := u.{{ .Repository.StructName }}.FindByID(id)
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func (u *{{ .UseCase.StructName }}) FindByID(id int) (*model.{{ .Model.Name }}, 
 	return {{ .Model.Name }}, nil
 }
 
-func (u *{{ .UseCase.StructName }}) Create({{ .Model.Name }} *model.{{ .Model.Name }}) (*model.{{ .Model.Name }}, error) {
+func ({{ .UseCase.ReceiverChar }} *{{ .UseCase.StructName }}) Create({{ .Model.Name }} *model.{{ .Model.Name }}) (*model.{{ .Model.Name }}, error) {
 	created{{ .Model.Name }}, err := u.{{ .Repository.StructName }}.Create({{ .Model.Name }})
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (u *{{ .UseCase.StructName }}) Create({{ .Model.Name }} *model.{{ .Model.Na
 	return created{{ .Model.Name }}, nil
 }
 
-func (u *{{ .UseCase.StructName }}) Update({{ .Model.Name }} *model.{{ .Model.Name }}) (*model.{{ .Model.Name }}, error) {
+func ({{ .UseCase.ReceiverChar }} *{{ .UseCase.StructName }}) Update({{ .Model.Name }} *model.{{ .Model.Name }}) (*model.{{ .Model.Name }}, error) {
 
 	updated{{ .Model.Name }}, err := u.{{ .Repository.StructName }}.Update({{ .Model.Name }})
 	if err != nil {
@@ -50,7 +50,7 @@ func (u *{{ .UseCase.StructName }}) Update({{ .Model.Name }} *model.{{ .Model.Na
 	return updated{{ .Model.Name }}, nil
 }
 
-func (u *{{ .UseCase.StructName }}) Delete(id int) error {
+func ({{ .UseCase.ReceiverChar }} *{{ .UseCase.StructName }}) Delete(id int) error {
 
 	{{ .Model.Name }}, err := u.{{ .Repository.StructName }}.FindByID(id)
 	if err != nil {
