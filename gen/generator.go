@@ -2,10 +2,11 @@ package gen
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"text/template"
+
+	"github.com/teppei22/fji-codegen/gen/utils"
 )
 
 type Generator interface {
@@ -50,7 +51,7 @@ func (g *AutoGen) Init() error {
 		if err := g.OutputFile(iI.TemplatePath, iI.OutputDir, iI.Name, nil); err != nil {
 			return fmt.Errorf("init output file error: %w", err)
 		}
-		LogCreated(g.Config.Model+".go", iI.OutputDir)
+		utils.LogCreated(filepath.Join(iI.OutputDir, iI.Name+".go"))
 	}
 	return nil
 
@@ -120,7 +121,7 @@ func (g *AutoGen) FileGenerateAll() error {
 			return fmt.Errorf("output file error: %w", err)
 			// panic(err)
 		}
-		LogCreated(g.Config.Model+".go", tI.OutputDir)
+		utils.LogCreated(filepath.Join(tI.OutputDir, g.Config.Model+".go"))
 	}
 	return nil
 
@@ -128,10 +129,9 @@ func (g *AutoGen) FileGenerateAll() error {
 
 func (g *AutoGen) OutputFile(tmpPath string, dir string, name string, data interface{}) error {
 
-	model := g.Config.Model
 	t := template.Must(template.ParseFiles(tmpPath))
 
-	of, err := os.Create(filepath.Join(dir, model+".go"))
+	of, err := os.Create(filepath.Join(dir, name+".go"))
 	if err != nil {
 		return fmt.Errorf("error creating file: %w", err)
 	}
@@ -193,21 +193,9 @@ func (g *AutoGen) MakeDirInit() error {
 		if err != nil {
 			return err
 		}
-		LogCreated("", path)
+		utils.LogCreated(path)
 
 	}
 
 	return nil
-}
-
-func MakeDir(dirPath string) error {
-	err := os.MkdirAll(dirPath, os.ModePerm)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func LogCreated(fileName string, outputDir string) {
-	log.Println("Created: ", fileName, " - ", outputDir)
 }
