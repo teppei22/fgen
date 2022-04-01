@@ -59,6 +59,7 @@ func (g *AutoGen) Init() error {
 
 func (g *AutoGen) FileGenerateAll() error {
 	outputPath := g.Config.OutputPath
+	model := g.Config.Model
 
 	// NOTE: dir exists judge
 
@@ -88,26 +89,26 @@ func (g *AutoGen) FileGenerateAll() error {
 	data := &OutputImplData{
 		Handler: ImplFileData{
 			PkgName:       "handler",
-			StructName:    "handler",
-			InterfaceName: "Handler",
+			StructName:    utils.InitialToLower(model) + "Handler",
+			InterfaceName: model + "Handler",
 			ReceiverChar:  "h",
 		},
 		UseCase: ImplFileData{
 			PkgName:       "usecase",
-			StructName:    "usecase",
-			InterfaceName: "Usecase",
+			StructName:    utils.InitialToLower(model) + "UseCase",
+			InterfaceName: model + "UseCase",
 			ReceiverChar:  "u",
 		},
 		Persistence: ImplFileData{
 			PkgName:       "persistence",
-			StructName:    "persistence",
-			InterfaceName: "Persistence",
+			StructName:    utils.InitialToLower(model) + "Persistence",
+			InterfaceName: model + "Persistence",
 			ReceiverChar:  "p",
 		},
 		Repository: ImplFileData{
 			PkgName:       "repository",
-			StructName:    "repository",
-			InterfaceName: "Repository",
+			StructName:    utils.InitialToLower(model) + "Repository",
+			InterfaceName: model + "Repository",
 			ReceiverChar:  "r",
 		},
 		Model: ModelInfo{
