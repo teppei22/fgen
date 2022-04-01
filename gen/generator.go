@@ -11,7 +11,7 @@ import (
 
 type Generator interface {
 	Init() error
-	FileGenerateAll() error
+	GenerateFileAll() error
 	OutputFile(tmpPath string, dir string, name string, data interface{}) error
 	MakeDirInit() error
 }
@@ -57,7 +57,7 @@ func (g *AutoGen) Init() error {
 
 }
 
-func (g *AutoGen) FileGenerateAll() error {
+func (g *AutoGen) GenerateFileAll() error {
 	outputPath := g.Config.OutputPath
 	model := g.Config.Model
 
