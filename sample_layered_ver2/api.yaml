@@ -1,0 +1,16 @@
+api:
+  modulepath: "github.com/sample"
+  method:
+    GET
+    CREATE
+    UPDATE
+    DELETE
+  layer:
+    handler:
+      outputdir: 
+    usecase:
+    domain:
+
+    infra:
+
+    
