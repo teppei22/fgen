@@ -34,7 +34,7 @@ if you enter the name of the model, it's automatically generated.
 		}
 		AutoGen := gen.NewAutoGen(*conf)
 
-		if err := AutoGen.FileGenerateAll(); err != nil {
+		if err := AutoGen.GenerateFileAll(); err != nil {
 			log.Fatal(err)
 		}
 	},
