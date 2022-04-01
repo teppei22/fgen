@@ -2,6 +2,7 @@ package gen
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -11,9 +12,7 @@ type Generator interface {
 	Init() error
 	FileGenerateAll() error
 	OutputFile(tmpPath string, dir string, name string, data interface{}) error
-	ListFiles(root string) ([]string, error)
 	MakeDirInit() error
-	MakeDir(dirPath string) error
 }
 
 type AutoGen struct {
@@ -51,6 +50,7 @@ func (g *AutoGen) Init() error {
 		if err := g.OutputFile(iI.TemplatePath, iI.OutputDir, iI.Name, nil); err != nil {
 			return fmt.Errorf("init output file error: %w", err)
 		}
+		LogCreated(iI.Name, iI.OutputDir)
 	}
 	return nil
 
@@ -120,6 +120,7 @@ func (g *AutoGen) FileGenerateAll() error {
 			return fmt.Errorf("output file error: %w", err)
 			// panic(err)
 		}
+		LogCreated(tI.Name, tI.OutputDir)
 	}
 	return nil
 
@@ -142,7 +143,7 @@ func (g *AutoGen) OutputFile(tmpPath string, dir string, name string, data inter
 	return nil
 }
 
-func (g *AutoGen) ListFiles(root string) ([]string, error) {
+func ListFiles(root string) ([]string, error) {
 
 	fileList := []string{}
 
@@ -198,10 +199,14 @@ func (g *AutoGen) MakeDirInit() error {
 	return nil
 }
 
-func (g *AutoGen) MakeDir(dirPath string) error {
+func MakeDir(dirPath string) error {
 	err := os.MkdirAll(dirPath, os.ModePerm)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func LogCreated(fileName string, outputDir string) {
+	log.Println("Created: ", fileName+".go", " - ", outputDir)
 }
