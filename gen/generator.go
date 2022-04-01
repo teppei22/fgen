@@ -50,7 +50,7 @@ func (g *AutoGen) Init() error {
 		if err := g.OutputFile(iI.TemplatePath, iI.OutputDir, iI.Name, nil); err != nil {
 			return fmt.Errorf("init output file error: %w", err)
 		}
-		LogCreated(iI.Name, iI.OutputDir)
+		LogCreated(g.Config.Model+".go", iI.OutputDir)
 	}
 	return nil
 
@@ -120,7 +120,7 @@ func (g *AutoGen) FileGenerateAll() error {
 			return fmt.Errorf("output file error: %w", err)
 			// panic(err)
 		}
-		LogCreated(tI.Name, tI.OutputDir)
+		LogCreated(g.Config.Model+".go", tI.OutputDir)
 	}
 	return nil
 
@@ -193,6 +193,7 @@ func (g *AutoGen) MakeDirInit() error {
 		if err != nil {
 			return err
 		}
+		LogCreated("", path)
 
 	}
 
@@ -208,5 +209,5 @@ func MakeDir(dirPath string) error {
 }
 
 func LogCreated(fileName string, outputDir string) {
-	log.Println("Created: ", fileName+".go", " - ", outputDir)
+	log.Println("Created: ", fileName, " - ", outputDir)
 }
