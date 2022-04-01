@@ -20,14 +20,13 @@ var initCmd = &cobra.Command{
 init of Fgen is a command to init the golang application composed of layered architecture.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("init called")
 
 		conf := &gen.Config{
 			OutputPath: "./output",
 			Model:      "task",
 		}
 		AutoGen := gen.NewAutoGen(*conf)
-
-		fmt.Println("init called")
 
 		if err := AutoGen.Init(); err != nil {
 			log.Fatal(err)
