@@ -5,7 +5,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/teppei22/fji-codegen/sample_layered/usecase"
+	"github.com/teppei22/fgen/sample_layered/usecase"
+	"github.com/teppei22/fji-codegen/sample_layered/domain/model"
 )
 
 type TaskHandler interface {

@@ -1,4 +1,4 @@
-module github.com/teppei22/fji-codegen/sample_layered
+module github.com/teppei22/fgen/sample_layered
 
 go 1.17
 

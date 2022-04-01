@@ -1,4 +1,4 @@
-module github.com/teppei22/fji-codegen
+module github.com/teppei22/fgen
 
 go 1.17
 

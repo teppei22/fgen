@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/teppei22/fji-codegen/sample_layered/router"
+	"github.com/teppei22/fgen/sample_layered/router"
 )
 
 const location = "Asia/Tokyo"

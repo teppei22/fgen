@@ -9,7 +9,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"github.com/teppei22/fji-codegen/gen"
+	"github.com/teppei22/fgen/gen"
 )
 
 // initCmd represents the init command

@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/teppei22/fji-codegen/sample_layered/domain/model"
+import "github.com/teppei22/fgen/sample_layered/domain/model"
 
 type TaskRepository interface {
 	Create(task *model.Task) (*model.Task, error)

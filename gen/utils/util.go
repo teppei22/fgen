@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
+	"go/ast"
 	"os"
 	"strings"
 )
@@ -60,4 +62,25 @@ func CamelToSnake(s string) string {
 
 	snake = strings.ToLower(snake)
 	return snake
+}
+
+type moduleInspector struct {
+	moduleName string
+	moduleSpec *ast.TypeSpec
+}
+
+func findModule(moduleName string) error {
+
+	fp, err := os.Open("go.mod")
+	if err != nil {
+		panic(err)
+	}
+	defer fp.Close()
+
+	reader := bufio.NewReaderSize(fp, 4096)
+	line, err := reader.ReadString('\n')
+	fmt.Println(line)
+
+	return nil
+
 }

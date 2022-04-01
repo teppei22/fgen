@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/teppei22/fji-codegen/gen/utils"
+	"github.com/teppei22/fgen/gen/utils"
 )
 
 type Generator interface {

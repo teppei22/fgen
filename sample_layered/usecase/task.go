@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/teppei22/fji-codegen/sample_layered/domain/model"
-	"github.com/teppei22/fji-codegen/sample_layered/domain/repository"
+	"github.com/teppei22/fgen/sample_layered/domain/model"
+	"github.com/teppei22/fgen/sample_layered/domain/repository"
 )
 
 type TaskUseCase interface {

@@ -2,8 +2,8 @@ package persistence
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/teppei22/fji-codegen/sample_layered/domain/model"
-	"github.com/teppei22/fji-codegen/sample_layered/domain/repository"
+	"github.com/teppei22/fgen/sample_layered/domain/model"
+	"github.com/teppei22/fgen/sample_layered/domain/repository"
 )
 
 type taskPersistence struct {

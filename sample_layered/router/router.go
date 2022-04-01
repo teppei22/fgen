@@ -3,8 +3,8 @@ package router
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/teppei22/fji-codegen/sample_layered/handler"
-	"github.com/teppei22/fji-codegen/sample_layered/infra"
+	"github.com/teppei22/fgen/sample_layered/handler"
+	"github.com/teppei22/fgen/sample_layered/infra"
 )
 
 func Init() *echo.Echo {

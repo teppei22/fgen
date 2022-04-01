@@ -1,1 +1,1 @@
-# fji-codegen
+# fgen
